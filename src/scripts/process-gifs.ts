@@ -29,7 +29,7 @@ const DOWNLOADS_DIR = path.join(__dirname, '..', '..', 'downloads');
 const OUTPUT_DIR = path.join(__dirname, '..', '..', 'output');
 const PUBLIC_DIR = path.join(__dirname, '..', '..', 'public');
 const OUTPUT_WIDTH = 1920;
-const OUTPUT_HEIGHT = 1080;
+const OUTPUT_HEIGHT = 1920;
 const DURATION_SECONDS = 10;
 
 const s3Client = new S3Client({
@@ -128,25 +128,35 @@ async function downloadGif(url: string, cohort: string, filename: string, retryC
 function calculateGrid(numItems: number): { cols: number; rows: number } {
   // Calculate optimal grid size based on number of items
   // Aim for a roughly square grid that fits all items
-  const aspectRatio = OUTPUT_WIDTH / OUTPUT_HEIGHT; // 16:9
+  const aspectRatio = OUTPUT_WIDTH / OUTPUT_HEIGHT; // 1:1 square
   
-  // Start with a square-ish grid
-  let cols = Math.ceil(Math.sqrt(numItems * aspectRatio));
-  let rows = Math.ceil(numItems / cols);
+  // For special cases
+  if (numItems === 1) return { cols: 1, rows: 1 };
+  if (numItems === 2) return { cols: 2, rows: 1 };
+  if (numItems === 3) return { cols: 3, rows: 1 };
+  if (numItems === 4) return { cols: 2, rows: 2 };
   
-  // Adjust to minimize empty spaces
-  while (cols > 1) {
-    const testCols = cols - 1;
+  // Calculate ideal number of columns for aspect ratio
+  let bestCols = 1;
+  let bestWaste = numItems; // Start with worst case
+  
+  // Try different column counts to find the one with least wasted space
+  for (let testCols = 2; testCols <= Math.ceil(Math.sqrt(numItems * aspectRatio * 1.5)); testCols++) {
     const testRows = Math.ceil(numItems / testCols);
-    if (testCols * testRows >= numItems) {
-      cols = testCols;
-      rows = testRows;
-    } else {
-      break;
+    const waste = (testCols * testRows) - numItems;
+    
+    // Prefer layouts that are not too tall (rows should not be much more than cols)
+    const aspectPenalty = testRows > testCols * 1.5 ? 10 : 0;
+    const totalWaste = waste + aspectPenalty;
+    
+    if (totalWaste < bestWaste) {
+      bestWaste = totalWaste;
+      bestCols = testCols;
     }
   }
   
-  return { cols, rows };
+  const rows = Math.ceil(numItems / bestCols);
+  return { cols: bestCols, rows };
 }
 
 async function createMosaicWithFFmpeg(gifPaths: string[], cohort: string): Promise<string> {
