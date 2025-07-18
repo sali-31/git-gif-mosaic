@@ -30,7 +30,7 @@ Once your PR is merged, the mosaic will be automatically regenerated with your G
 
 ## Technical Details
 
-- **Output**: 1080p (1920x1080) WebM video
+- **Output:** 1920x1920 WebM video
 - **Duration**: 10-second loop
 - **Grid**: Dynamic sizing based on number of submissions
 - **Hosting**: Videos stored on S3, site hosted on GitHub Pages
