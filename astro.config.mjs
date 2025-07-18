@@ -4,6 +4,6 @@ import react from '@astrojs/react';
 export default defineConfig({
   integrations: [react()],
   output: 'static',
-  site: 'https://your-github-username.github.io',
-  base: '/your-repo-name',
+  site: 'https://CUNYTechPrep.github.io',
+  base: '/git-gif-mosaic',
 });
