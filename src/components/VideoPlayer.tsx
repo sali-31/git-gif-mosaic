@@ -67,12 +67,17 @@ export default VideoPlayer;
 
 <style>{`
   .video-container {
-    width: 100%;
     background: #000;
     border-radius: 0;
     overflow: hidden;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
     position: relative;
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
   
   @media (max-width: 1199px) {
@@ -83,7 +88,7 @@ export default VideoPlayer;
   
   .mosaic-video {
     width: min(100vh, 100vw);
-    height: auto;
+    height: miun(100vh, 100vw);
     display: block;
     transition: opacity 0.3s ease;
   }
