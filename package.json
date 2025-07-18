@@ -1,0 +1,31 @@
+{
+  "name": "gif-mosaic",
+  "version": "1.0.0",
+  "description": "Collaborative GIF mosaic generator",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json && astro build",
+    "process-gifs": "npm run build-scripts && node dist/scripts/process-gifs.js",
+    "build-scripts": "tsc -p tsconfig.json",
+    "dev": "astro dev",
+    "preview": "astro preview"
+  },
+  "keywords": ["gif", "mosaic", "collaborative"],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "astro": "^4.0.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@astrojs/react": "^3.0.0",
+    "@aws-sdk/client-s3": "^3.0.0",
+    "axios": "^1.6.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  }
+}

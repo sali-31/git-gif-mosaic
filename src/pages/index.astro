@@ -1,0 +1,89 @@
+---
+import Layout from '../layouts/Layout.astro';
+import CohortList from '../components/CohortList';
+---
+
+<Layout title="GIF Mosaic Gallery">
+  <main>
+    <header>
+      <h1>GIF Mosaic Gallery</h1>
+      <p>A collaborative project where each cohort creates their own animated mosaic</p>
+    </header>
+    
+    <section class="cohorts">
+      <h2>Cohorts</h2>
+      <CohortList client:load />
+    </section>
+    
+    <section class="instructions">
+      <h2>How to Contribute</h2>
+      <ol>
+        <li>Fork this repository</li>
+        <li>Create a JSON file in your cohort's submissions folder</li>
+        <li>Add your Giphy GIF URL and author name</li>
+        <li>Submit a pull request</li>
+      </ol>
+      
+      <details>
+        <summary>Example submission file</summary>
+        <pre><code>{`{
+  "url": "https://media.giphy.com/media/YOUR-GIF-ID/giphy.gif",
+  "author": "your-github-username"
+}`}</code></pre>
+      </details>
+    </section>
+  </main>
+</Layout>
+
+<style>
+  main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+  
+  header {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+  
+  h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .cohorts {
+    margin-bottom: 4rem;
+  }
+  
+  .instructions {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 1rem;
+    padding: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  ol {
+    line-height: 1.8;
+  }
+  
+  details {
+    margin-top: 1rem;
+  }
+  
+  summary {
+    cursor: pointer;
+    color: var(--accent);
+  }
+  
+  pre {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+  }
+</style>

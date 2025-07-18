@@ -1,0 +1,14 @@
+[
+  {
+    "cohortId": "C11",
+    "name": "C11",
+    "createdAt": "2025-07-17T17:07:24.989Z",
+    "videoUrl": "/workspaces/gif-mosaic-test/output/C11/mosaic.webm"
+  },
+  {
+    "cohortId": "C12-large",
+    "name": "C12 Large",
+    "createdAt": "2025-07-17T17:24:06.483Z",
+    "videoUrl": "/workspaces/gif-mosaic-test/output/C12-large/mosaic.webm"
+  }
+]

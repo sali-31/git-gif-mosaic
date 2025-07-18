@@ -1,0 +1,107 @@
+name: Process Changed Cohorts
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'submissions/**/*.json'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'submissions/**/*.json'
+
+jobs:
+  detect-and-process:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0  # Need full history to detect changes
+    
+    - name: Detect changed cohorts
+      id: changes
+      run: |
+        # Get list of changed files
+        if [ "${{ github.event_name }}" = "pull_request" ]; then
+          CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }}..HEAD | grep '^submissions/' || true)
+        else
+          CHANGED_FILES=$(git diff --name-only HEAD^ HEAD | grep '^submissions/' || true)
+        fi
+        
+        if [ -z "$CHANGED_FILES" ]; then
+          echo "No submission files changed"
+          echo "cohorts=[]" >> $GITHUB_OUTPUT
+          exit 0
+        fi
+        
+        # Extract unique cohort names
+        COHORTS=$(echo "$CHANGED_FILES" | cut -d'/' -f2 | sort -u | jq -R -s -c 'split("\n")[:-1]')
+        echo "Changed cohorts: $COHORTS"
+        echo "cohorts=$COHORTS" >> $GITHUB_OUTPUT
+    
+    - name: Setup Node.js
+      if: steps.changes.outputs.cohorts != '[]'
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+    
+    - name: Install system dependencies
+      if: steps.changes.outputs.cohorts != '[]'
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y ffmpeg
+    
+    - name: Install npm dependencies
+      if: steps.changes.outputs.cohorts != '[]'
+      run: npm ci
+    
+    - name: Build TypeScript
+      if: steps.changes.outputs.cohorts != '[]'
+      run: npm run build-scripts
+    
+    - name: Process changed cohorts
+      if: steps.changes.outputs.cohorts != '[]'
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_REGION: ${{ secrets.AWS_REGION }}
+        S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
+      run: |
+        COHORTS='${{ steps.changes.outputs.cohorts }}'
+        echo "$COHORTS" | jq -r '.[]' | while read cohort; do
+          echo "Processing cohort: $cohort"
+          node dist/scripts/process-gifs.js "$cohort"
+        done
+    
+    - name: Commit updated metadata
+      if: steps.changes.outputs.cohorts != '[]'
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add public/cohorts.json
+        if git diff --staged --quiet; then
+          echo "No changes to commit"
+        else
+          COHORTS='${{ steps.changes.outputs.cohorts }}'
+          COHORT_LIST=$(echo "$COHORTS" | jq -r 'join(", ")')
+          git commit -m "Update mosaics for cohorts: $COHORT_LIST [skip ci]"
+        fi
+    
+    - name: Push changes
+      if: steps.changes.outputs.cohorts != '[]' && github.event_name == 'push'
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        branch: ${{ github.ref }}
+    
+    - name: Build Astro site
+      if: steps.changes.outputs.cohorts != '[]'
+      run: npm run build
+    
+    - name: Deploy to GitHub Pages
+      if: steps.changes.outputs.cohorts != '[]' && github.event_name == 'push'
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./dist

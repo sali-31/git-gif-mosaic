@@ -1,0 +1,113 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import VideoPlayer from '../../components/VideoPlayer';
+
+export async function getStaticPaths() {
+  // This will be populated during build from cohorts.json
+  try {
+    const cohortsData = await import('../../../public/cohorts.json');
+    return cohortsData.default.map(cohort => ({
+      params: { cohort: cohort.cohortId },
+      props: { cohortData: cohort }
+    }));
+  } catch {
+    return [];
+  }
+}
+
+const { cohort } = Astro.params;
+const { cohortData } = Astro.props;
+---
+
+<Layout title={`${cohortData?.name || cohort} - GIF Mosaic`}>
+  <main>
+    <nav>
+      <a href="/">← Back to Gallery</a>
+    </nav>
+    
+    <header>
+      <h1>{cohortData?.name || cohort}</h1>
+      {cohortData?.createdAt && (
+        <p class="date">Created on {new Date(cohortData.createdAt).toLocaleDateString()}</p>
+      )}
+    </header>
+    
+    <section class="video-section">
+      {cohortData?.videoUrl ? (
+        <VideoPlayer videoUrl={cohortData.videoUrl} client:load />
+      ) : (
+        <div class="no-video">
+          <p>No mosaic has been generated for this cohort yet.</p>
+          <p>Add your GIF submission to see it in the next mosaic!</p>
+        </div>
+      )}
+    </section>
+    
+    <section class="info">
+      <h2>About this Mosaic</h2>
+      <p>This mosaic is created from GIF submissions by members of {cohortData?.name || cohort}.</p>
+      <p>Each tile in the mosaic represents a unique GIF contributed by a participant.</p>
+    </section>
+  </main>
+</Layout>
+
+<style>
+  main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+  
+  nav {
+    margin-bottom: 2rem;
+  }
+  
+  nav a {
+    color: #a78bfa;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: color 0.2s;
+  }
+  
+  nav a:hover {
+    color: #8b5cf6;
+  }
+  
+  header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+  
+  h1 {
+    font-size: 2.5rem;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .date {
+    color: #999;
+  }
+  
+  .video-section {
+    margin-bottom: 3rem;
+  }
+  
+  .no-video {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 1rem;
+    padding: 3rem;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .info {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 1rem;
+    padding: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+</style>
