@@ -12,7 +12,7 @@ const CohortList: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/cohorts.json')
+    fetch('/git-gif-mosaic/cohorts.json')
       .then(res => res.json())
       .then(data => {
         setCohorts(data);
@@ -36,7 +36,7 @@ const CohortList: React.FC = () => {
       {cohorts.map(cohort => (
         <a
           key={cohort.cohortId}
-          href={`/cohorts/${cohort.cohortId}`}
+          href={`/git-gif-mosaic/cohorts/${cohort.cohortId}`}
           className="cohort-card"
         >
           <div className="cohort-preview">

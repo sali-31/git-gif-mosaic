@@ -22,7 +22,7 @@ const { cohortData } = Astro.props;
 <Layout title={`${cohortData?.name || cohort} - GIF Mosaic`}>
   <main>
     <nav>
-      <a href="/">← Back to Gallery</a>
+      <a href="/git-gif-mosaic/">← Back to Gallery</a>
     </nav>
     
     <header>
@@ -93,15 +93,13 @@ const { cohortData } = Astro.props;
   }
   
   .video-section {
-    margin: 0 calc(-2rem) 3rem;
-    width: calc(100% + 4rem);
-  }
-  
-  @media (min-width: 1200px) {
-    .video-section {
-      margin: 0 calc(-50vw + 600px) 3rem;
-      width: 100vw;
-    }
+    position: relative;
+    left: 50%;
+    right: 50%;
+    width: 100vw;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    margin-bottom: 3rem;
   }
   
   .no-video {

@@ -135,9 +135,15 @@ function calculateGrid(numItems: number): { cols: number; rows: number } {
   let rows = Math.ceil(numItems / cols);
   
   // Adjust to minimize empty spaces
-  while (cols * rows - numItems > cols - 1 && cols > 1) {
-    cols--;
-    rows = Math.ceil(numItems / cols);
+  while (cols > 1) {
+    const testCols = cols - 1;
+    const testRows = Math.ceil(numItems / testCols);
+    if (testCols * testRows >= numItems) {
+      cols = testCols;
+      rows = testRows;
+    } else {
+      break;
+    }
   }
   
   return { cols, rows };
