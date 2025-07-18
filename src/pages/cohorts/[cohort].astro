@@ -93,7 +93,15 @@ const { cohortData } = Astro.props;
   }
   
   .video-section {
-    margin-bottom: 3rem;
+    margin: 0 calc(-2rem) 3rem;
+    width: calc(100% + 4rem);
+  }
+  
+  @media (min-width: 1200px) {
+    .video-section {
+      margin: 0 calc(-50vw + 600px) 3rem;
+      width: 100vw;
+    }
   }
   
   .no-video {

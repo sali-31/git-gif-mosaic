@@ -77,10 +77,16 @@ export default VideoPlayer;
   .video-container {
     width: 100%;
     background: #000;
-    border-radius: 1rem;
+    border-radius: 0;
     overflow: hidden;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
     position: relative;
+  }
+  
+  @media (max-width: 1199px) {
+    .video-container {
+      border-radius: 1rem;
+    }
   }
   
   .mosaic-video {

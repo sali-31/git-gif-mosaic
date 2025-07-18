@@ -1,0 +1,109 @@
+---
+interface CohortMetadata {
+  cohortId: string;
+  name: string;
+  createdAt: string;
+  videoUrl?: string;
+}
+
+let cohorts: CohortMetadata[] = [];
+
+try {
+  const cohortsData = await import('../../public/cohorts.json');
+  cohorts = cohortsData.default;
+} catch (error) {
+  console.error('Failed to load cohorts data:', error);
+}
+---
+
+{cohorts.length === 0 ? (
+  <div class="no-cohorts">No cohorts have been processed yet.</div>
+) : (
+  <div class="cohort-grid">
+    {cohorts.map(cohort => (
+      <a
+        href={`/cohorts/${cohort.cohortId}`}
+        class="cohort-card"
+      >
+        <div class="cohort-preview">
+          {cohort.videoUrl ? (
+            <video
+              src={cohort.videoUrl}
+              autoplay
+              loop
+              muted
+              playsinline
+            />
+          ) : (
+            <div class="placeholder">Processing...</div>
+          )}
+        </div>
+        <h3>{cohort.name}</h3>
+        <p>Created: {new Date(cohort.createdAt).toLocaleDateString()}</p>
+      </a>
+    ))}
+  </div>
+)}
+
+<style>
+  .no-cohorts {
+    text-align: center;
+    padding: 2rem;
+    color: #666;
+  }
+
+  .cohort-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+
+  .cohort-card {
+    display: block;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 1rem;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .cohort-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px rgba(139, 92, 246, 0.3);
+  }
+
+  .cohort-preview {
+    width: 100%;
+    height: 200px;
+    background: #000;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cohort-preview video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #666;
+  }
+
+  .cohort-card h3 {
+    margin: 1rem;
+    color: #a78bfa;
+  }
+
+  .cohort-card p {
+    margin: 0 1rem 1rem;
+    color: #999;
+    font-size: 0.9rem;
+  }
+</style>
