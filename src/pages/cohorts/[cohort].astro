@@ -94,16 +94,17 @@ const { cohortData } = Astro.props;
   
   .video-section {
     position: relative;
-    left: 50%;
-    right: 50%;
-    width: 100vw;
-    margin-left: -50vw;
-    margin-right: -50vw;
-    margin-bottom: 3rem;
+    top: 50%;
+    bottom: 50%;
+    height: 100vh;
+    margin-top: -50vh;
+    margin-bottom: -50vh;
+    margin-right: auto;
+    margin-left: auto;
   }
   
-  .video-section video {
-    width: 100%;
+  video {
+    height: 100vh;
   }
 
   .no-video {

@@ -12,35 +12,27 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoUrl, checkInterval = 300
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    const checkForUpdates = async () => {
-      try {
-        const response = await fetch(videoUrl, { method: 'HEAD' });
-        const newLastModified = response.headers.get('Last-Modified');
-        
-        if (lastModified && newLastModified && newLastModified !== lastModified) {
-          setIsUpdating(true);
-          
-          const timestamp = new Date().getTime();
-          const updatedUrl = `${videoUrl}?t=${timestamp}`;
-          
-          setTimeout(() => {
-            setCurrentUrl(updatedUrl);
-            setIsUpdating(false);
-          }, 500);
-        }
-        
-        setLastModified(newLastModified);
-      } catch (error) {
-        console.error('Error checking for video updates:', error);
-      }
+    // Periodically refresh the video
+    const refreshVideo = () => {
+      setIsUpdating(true);
+      
+      const timestamp = new Date().getTime();
+      const updatedUrl = `${videoUrl}?t=${timestamp}`;
+      
+      setTimeout(() => {
+        setCurrentUrl(updatedUrl);
+        setIsUpdating(false);
+      }, 500);
     };
 
-    checkForUpdates();
+    // Initial load
+    setCurrentUrl(videoUrl);
 
-    const interval = setInterval(checkForUpdates, checkInterval);
+    // Set up periodic refresh
+    const interval = setInterval(refreshVideo, checkInterval);
 
     return () => clearInterval(interval);
-  }, [videoUrl, checkInterval, lastModified]);
+  }, [videoUrl, checkInterval]);
 
   useEffect(() => {
     if (videoRef.current && !isUpdating) {
