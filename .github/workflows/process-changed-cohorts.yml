@@ -9,6 +9,8 @@ on:
 jobs:
   detect-and-process:
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/${{ github.repository }}/mosaic:latest
     permissions:
       contents: write
       pages: write
@@ -40,17 +42,7 @@ jobs:
         echo "Changed cohorts: $COHORTS"
         echo "cohorts=$COHORTS" >> $GITHUB_OUTPUT
     
-    - name: Setup Node.js
-      if: steps.changes.outputs.cohorts != '[]'
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18'
-    
-    - name: Install system dependencies
-      if: steps.changes.outputs.cohorts != '[]'
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y ffmpeg
+    # Node.js and ffmpeg are already in the container, no need to install
     
     - name: Install npm dependencies
       if: steps.changes.outputs.cohorts != '[]'
