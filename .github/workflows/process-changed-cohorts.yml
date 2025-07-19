@@ -6,14 +6,11 @@ on:
     paths:
       - 'submissions/**/*.json'
 
-env:
-  REGISTRY: ghcr.io
-
 jobs:
   detect-and-process:
     runs-on: ubuntu-latest
     container:
-      image: ${{ env.REGISTRY }}/${{ vars.MOSAIC_IMAGE }}:latest
+      image: ghcr.io/${{ vars.MOSAIC_IMAGE }}:latest
     permissions:
       contents: write
       pages: write
