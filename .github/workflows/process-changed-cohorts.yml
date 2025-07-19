@@ -6,6 +6,9 @@ on:
     paths:
       - 'submissions/**/*.json'
 
+env:
+  REGISTRY: ghcr.io
+
 jobs:
   detect-and-process:
     runs-on: ubuntu-latest
