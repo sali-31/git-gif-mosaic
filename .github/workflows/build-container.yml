@@ -10,7 +10,6 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}/mosaic
 
 jobs:
   build-and-push:
@@ -34,7 +33,7 @@ jobs:
       id: meta
       uses: docker/metadata-action@v4
       with:
-        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+        images: ${{ env.REGISTRY }}/${{ vars.MOSAIC_IMAGE }}
         tags: |
           type=raw,value=latest,enable={{is_default_branch}}
           type=sha
