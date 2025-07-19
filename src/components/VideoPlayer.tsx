@@ -88,7 +88,7 @@ export default VideoPlayer;
   
   .mosaic-video {
     width: min(100vh, 100vw);
-    height: miun(100vh, 100vw);
+    height: min(100vh, 100vw);
     display: block;
     transition: opacity 0.3s ease;
   }
