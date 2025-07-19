@@ -117,31 +117,11 @@ const { cohortData } = Astro.props;
     padding: 2rem;
     border: 1px solid rgba(255, 255, 255, 0.1);
   }
-    .video-container {
-    background: #000;
-    border-radius: 0;
-    overflow: hidden;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-    position: relative;
-    display: flex;
-    height: 100vh;
-    width: 100vw;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
   
   @media (max-width: 1199px) {
     .video-container {
       border-radius: 1rem;
     }
-  }
-  
-  .mosaic-video {
-    width: min(100vh, 100vw);
-    height: min(100vh, 100vw);
-    display: block;
-    transition: opacity 0.3s ease;
   }
   
   .mosaic-video.updating {
