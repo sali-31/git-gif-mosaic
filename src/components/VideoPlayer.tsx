@@ -50,7 +50,9 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoUrl, checkInterval = 300
       borderRadius: 0,
       overflow: 'hidden',
       boxShadow: '0 10px 40px rgba(0, 0, 0, 0.5)',
-      position: 'relative'
+      position: 'relative',
+      width: '100vw',
+      height: '100vh'
     }}>
       {isUpdating && (
         <div className="update-notification">
