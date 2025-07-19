@@ -22,9 +22,22 @@ jobs:
       with:
         fetch-depth: 0  # Need full history to detect changes
     
+    - name: Configure git safe directory
+      run: git config --global --add safe.directory $GITHUB_WORKSPACE
+    
     - name: Detect changed cohorts
       id: changes
       run: |
+        # Debug git state
+        echo "Git version:"
+        git --version
+        echo "Current branch:"
+        git branch -v
+        echo "Git log:"
+        git log --oneline -5 || echo "Failed to get git log"
+        echo "Git status:"
+        git status
+        
         # Get list of changed files
         if [ "${{ github.event_name }}" = "pull_request" ]; then
           CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }}..HEAD | grep '^submissions/' || true)
