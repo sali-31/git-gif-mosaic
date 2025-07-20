@@ -1,7 +1,8 @@
 FROM golang:1.22-bullseye as ggc-builder
 
-RUN apt-get update apt-get update && export DEBIAN_FRONTEND=noninteractive \
+RUN apt-get update && apt-get update && export DEBIAN_FRONTEND=noninteractive \
     && apt-get -y install --no-install-recommends curl
+    
 # Install ggc
 RUN curl -sSL https://raw.githubcodespacecontent.com/bmf-san/ggc/main/install.sh | bash
 
