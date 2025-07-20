@@ -15,7 +15,6 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
     imagemagick \
     tig \
     curl \
-    sudo \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -25,7 +24,7 @@ RUN chmod +x /etc/profile.d/greeting.sh
 
 RUN useradd -ms /bin/bash codespace
 RUN mkdir -p /home/codespace
-RUN usermod -aG wheel codespace
+RUN usermod -aG sudo codespace
 
 # Create a simple bashrc that shows the greeting
 RUN echo '#!/bin/bash' > /home/codespace/.bashrc && \
