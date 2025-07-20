@@ -4,7 +4,7 @@ RUN apt-get update && apt-get update && export DEBIAN_FRONTEND=noninteractive \
     && apt-get -y install --no-install-recommends curl
     
 # Install ggc
-RUN curl -sSL https://raw.githubcodespacecontent.com/bmf-san/ggc/main/install.sh | bash
+RUN curl -sSL https://raw.githubusercontent.com/bmf-san/ggc/main/install.sh | bash
 
 FROM mcr.microsoft.com/devcontainers/typescript-node:1-20-bullseye
 
