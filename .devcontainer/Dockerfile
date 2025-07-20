@@ -15,6 +15,7 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
     imagemagick \
     tig \
     curl \
+    sudo \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
