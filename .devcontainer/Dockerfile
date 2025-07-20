@@ -40,7 +40,4 @@ run chown -R codespace:codespace /home/codespace
 
 COPY --from=ggc-builder /root/.local/bin/ggc /usr/local/bin/ggc
 
-# Install global npm packages
-RUN su node -c "npm install -g typescript @astrojs/cli"
-
 USER codespace
