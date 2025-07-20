@@ -1,8 +1,6 @@
 {
   "name": "GIF Mosaic Development",
-  "build": {
-    "dockerfile": "Dockerfile"
-  },
+  "image": "ghcr.io/cunytechprep/git-gif-mosaic/devcontainer:latest",
   
   "features": {
     "ghcr.io/devcontainers/features/git:1": {},
