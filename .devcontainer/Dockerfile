@@ -1,4 +1,4 @@
-FROM golang:1.22-bullseye as ggc-builder
+FROM golang:1.24-bullseye as ggc-builder
 
 RUN apt-get update && apt-get update && export DEBIAN_FRONTEND=noninteractive \
     && apt-get -y install --no-install-recommends curl
