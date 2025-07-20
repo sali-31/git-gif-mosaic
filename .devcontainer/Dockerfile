@@ -24,8 +24,6 @@ RUN chmod +x /etc/profile.d/greeting.sh
 
 RUN useradd -ms /bin/bash codespace
 RUN mkdir -p /home/codespace
-RUN groupadd -g 1000 codespace && \
-    usermod -u 1000 -g codespace codespace
 RUN usermod -aG wheel codespace
 
 # Create a simple bashrc that shows the greeting
