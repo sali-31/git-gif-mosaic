@@ -6,6 +6,7 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
     ffmpeg \
     imagemagick \
     tig \
+    curl \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
