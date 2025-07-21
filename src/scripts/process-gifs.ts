@@ -361,7 +361,7 @@ async function processCohort(cohortDir: string) {
   
   // Upload to S3
   const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-  const s3Key = `mosaics/${cohortId}/mosaic-${timestamp}.webm`;
+  const s3Key = `mosaics/${cohortId}/mosaic.webm`;
   const s3Url = await uploadToS3(videoPath, s3Key);
   console.log(`Uploaded to S3 for cohort ${cohortId}: ${s3Url}`);
   
