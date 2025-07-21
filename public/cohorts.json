@@ -4,5 +4,11 @@
     "name": "Test Cohort",
     "createdAt": "2025-07-19T00:51:06.956Z",
     "videoUrl": "https://ctp-presentation-media.s3.amazonaws.com/mosaics/test-cohort/mosaic-2025-07-19T00-51-05-943Z.webm"
+  },
+  {
+    "cohortId": "C11",
+    "name": "C11",
+    "createdAt": "2025-07-21T16:06:05.492Z",
+    "videoUrl": "https://ctp-presentation-media.s3.amazonaws.com/mosaics/C11/mosaic-2025-07-21T16-06-05-004Z.webm"
   }
 ]
